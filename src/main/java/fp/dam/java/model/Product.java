@@ -17,19 +17,6 @@ public class Product {
 	private float buyPrice;
 	private float msrp;
 
-	public Product(String csvLine) {
-		String [] tokens = csvLine.split("\\|");
-		code = tokens[0];
-		name = tokens[1];
-		productLine = tokens[2];
-		scale = tokens[3];
-		vendor = tokens[4];
-		description = tokens[5];
-		stock = Integer.parseInt(tokens[6]);
-		buyPrice = Float.parseFloat(tokens[7]);
-		msrp = Float.parseFloat(tokens[8]);	
-	}
-	
 	public Product(CSVRecord r) {
 		code = r.get("code");
 		name = r.get("name");

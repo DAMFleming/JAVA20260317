@@ -11,15 +11,6 @@ public class OrderDetail {
 	private float priceEach;
 	private int orderLineNumber;
 	
-	public OrderDetail(String csvLine) {
-		String [] tokens = csvLine.split("\\|");
-		orderNumber = Integer.parseInt(tokens[0]);
-		productCode = tokens[1];
-		quantityOrdered = Integer.parseInt(tokens[2]);
-		priceEach = Float.parseFloat(tokens[3]);
-		orderLineNumber = Integer.parseInt(tokens[4]);	
-	}
-	
 	public OrderDetail(CSVRecord r) {
 		orderNumber = Integer.parseInt(r.get("orderNumber"));
 		productCode = r.get("productCode");

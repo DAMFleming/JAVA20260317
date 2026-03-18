@@ -15,17 +15,6 @@ public class Order {
 	private String comments;
 	private int customerNumber;
 	
-	public Order(String csvLine) {
-		String [] tokens = csvLine.split("\\|");
-		orderNumber = Integer.parseInt(tokens[0]);
-		orderDate = tokens[1].length() == 0 ? null: LocalDate.parse(tokens[1]);
-		requiredDate = tokens[2].length() == 0 ? null: LocalDate.parse(tokens[2]);
-		shippedDate = tokens[3].length() == 0 ? null: LocalDate.parse(tokens[3]);
-		status = tokens[4];
-		comments = tokens[5];
-		customerNumber = Integer.parseInt(tokens[6]);
-	}
-	
 	public Order(CSVRecord r) {
 		orderNumber = Integer.parseInt(r.get("orderNumber"));
 		orderDate = r.get("orderDate").length() == 0 ? null: LocalDate.parse(r.get("orderDate"));

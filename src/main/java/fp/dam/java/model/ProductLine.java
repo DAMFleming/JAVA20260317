@@ -9,12 +9,6 @@ public class ProductLine {
 	private String productLine;
 	private String textDescription;
 	
-	public ProductLine(String csvLine) {
-		String [] tokens = csvLine.split("\\|");
-		productLine = tokens[0];
-		textDescription = tokens[1];
-	}
-	
 	public ProductLine(CSVRecord r) {
 		productLine = r.get("productLine");
 		textDescription = r.get("textDescription");
