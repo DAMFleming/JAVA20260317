@@ -3,4 +3,14 @@
   <groupId>fp.dam.java</groupId>
   <artifactId>Java20260317</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
+  <dependencies>
+  	<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-csv</artifactId>
+	    <version>1.14.1</version>
+	    <scope>compile</scope>
+	</dependency>
+  </dependencies>
+  
 </project>

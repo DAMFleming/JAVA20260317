@@ -2,6 +2,8 @@ package fp.dam.java.model;
 
 import java.util.Objects;
 
+import org.apache.commons.csv.CSVRecord;
+
 public class OrderDetail {
 	private int orderNumber;
 	private String productCode;
@@ -16,7 +18,15 @@ public class OrderDetail {
 		quantityOrdered = Integer.parseInt(tokens[2]);
 		priceEach = Float.parseFloat(tokens[3]);
 		orderLineNumber = Integer.parseInt(tokens[4]);	
-	}	
+	}
+	
+	public OrderDetail(CSVRecord r) {
+		orderNumber = Integer.parseInt(r.get("orderNumber"));
+		productCode = r.get("productCode");
+		quantityOrdered = Integer.parseInt(r.get("quantityOrdered"));
+		priceEach = Float.parseFloat(r.get("priceEach"));
+		orderLineNumber = Integer.parseInt(r.get("orderLineNumber"));	
+	}
 	
 	public int getOrderNumber() {
 		return orderNumber;

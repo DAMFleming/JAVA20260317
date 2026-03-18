@@ -2,6 +2,9 @@ package fp.dam.java.model;
 
 import java.util.Objects;
 
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+
 public class Product {
 	
 	private String code;
@@ -25,6 +28,18 @@ public class Product {
 		stock = Integer.parseInt(tokens[6]);
 		buyPrice = Float.parseFloat(tokens[7]);
 		msrp = Float.parseFloat(tokens[8]);	
+	}
+	
+	public Product(CSVRecord r) {
+		code = r.get("code");
+		name = r.get("name");
+		productLine = r.get("productLine");
+		scale = r.get("scale");
+		vendor = r.get("vendor");
+		description = r.get("description");
+		stock = Integer.parseInt(r.get("stock"));
+		buyPrice = Float.parseFloat(r.get("buyPrice"));
+		msrp = Float.parseFloat(r.get("msrp"));	
 	}	
 	
 	public String getCode() {
@@ -62,6 +77,12 @@ public class Product {
 	public float getMsrp() {
 		return msrp;
 	}
+	
+	
+	public void writeCSV(CSVPrinter printer) {
+		
+	}
+	
 
 	@Override
 	public int hashCode() {

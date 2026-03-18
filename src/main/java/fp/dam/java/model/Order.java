@@ -3,6 +3,8 @@ package fp.dam.java.model;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import org.apache.commons.csv.CSVRecord;
+
 public class Order {
 
 	private int orderNumber;
@@ -22,6 +24,16 @@ public class Order {
 		status = tokens[4];
 		comments = tokens[5];
 		customerNumber = Integer.parseInt(tokens[6]);
+	}
+	
+	public Order(CSVRecord r) {
+		orderNumber = Integer.parseInt(r.get("orderNumber"));
+		orderDate = r.get("orderDate").length() == 0 ? null: LocalDate.parse(r.get("orderDate"));
+		requiredDate = r.get("requiredDate").length() == 0 ? null: LocalDate.parse(r.get("requiredDate"));
+		shippedDate = r.get("shippedDate").length() == 0 ? null: LocalDate.parse(r.get("shippedDate"));
+		status = r.get("status");
+		comments = r.get("comments");
+		customerNumber = Integer.parseInt(r.get("customerNumber"));
 	}
 
 	public int getOrderNumber() {

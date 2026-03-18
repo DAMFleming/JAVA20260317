@@ -2,6 +2,8 @@ package fp.dam.java.model;
 
 import java.util.Objects;
 
+import org.apache.commons.csv.CSVRecord;
+
 public class ProductLine {
 
 	private String productLine;
@@ -11,6 +13,11 @@ public class ProductLine {
 		String [] tokens = csvLine.split("\\|");
 		productLine = tokens[0];
 		textDescription = tokens[1];
+	}
+	
+	public ProductLine(CSVRecord r) {
+		productLine = r.get("productLine");
+		textDescription = r.get("textDescription");
 	}
 
 	public String getProductLine() {
