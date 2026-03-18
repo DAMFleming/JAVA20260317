@@ -1,10 +1,17 @@
 package fp.dam.java;
 
+import static java.util.stream.Collectors.averagingDouble;
+import static java.util.stream.Collectors.groupingBy;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
 
@@ -52,11 +59,37 @@ public class Ejercicio03 {
 		
 	}
 	
+	static Map<String, Double> metodo1() {
+		return products.stream().collect(groupingBy(
+				Product::getProductLine,
+				TreeMap::new,
+				averagingDouble(Product::getMsrp)));
+	}
+	
+	static double metodo2() {
+		return orders.stream()
+			.mapToDouble(p -> orderDetails.stream()
+				.filter(od -> od.getOrderNumber() == p.getOrderNumber())
+				.collect(Collectors.summingDouble(od -> od.getQuantityOrdered() * od.getPriceEach())))
+			.average().getAsDouble();
+	}
+	
+	static String metodo3() {
+		return products.stream()
+				.collect(groupingBy(Product::getVendor, Collectors.counting()))
+				.entrySet()
+				.stream()
+				.max(Comparator.comparingLong(e -> e.getValue()))
+				.get()
+				.getKey();
+	}
+	
+	
+	
 	public static void main(String[] args) {
-//		products.forEach(System.out::println);
-//		productLines.forEach(System.out::println);
-//		orders.forEach(System.out::println);
-//		orderDetails.forEach(System.out::println);
+//		metodo1().entrySet().forEach(System.out::println);
+		System.out.println(metodo2());
+		System.out.println(metodo3());
 	}
 	
 }

@@ -1,11 +1,12 @@
 package fp.dam.java.model;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-public class Product {
+public class Product implements Comparable<Product> {
 	
 	private String code;
 	private String name;
@@ -97,6 +98,20 @@ public class Product {
 		return "Product [code=" + code + ", name=" + name + ", productLine=" + productLine + ", scale=" + scale
 				+ ", vendor=" + vendor + ", description=" + description + ", stock=" + stock + ", buyPrice=" + buyPrice
 				+ ", msrp=" + msrp + "]";
+	}
+
+	static Comparator<Product> c = Comparator.comparing(Product::getProductLine)
+			.thenComparing(Product::getName)
+			.thenComparing(Product::getCode)
+			.thenComparing(Product::getScale)
+			.thenComparing(Product::getVendor)
+			.thenComparing(Product::getDescription)
+			.thenComparing(Product::getBuyPrice)
+			.thenComparing(Product::getMsrp);
+			
+	@Override
+	public int compareTo(Product p) {
+		return c.compare(this, p);
 	}
 	
 }
