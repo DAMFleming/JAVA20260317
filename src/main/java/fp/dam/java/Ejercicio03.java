@@ -1,7 +1,6 @@
 package fp.dam.java;
 
-import static java.util.stream.Collectors.averagingDouble;
-import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.*;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,6 +9,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -26,6 +26,21 @@ public class Ejercicio03 {
 	public static final List<ProductLine> productLines;
 	public static final List<Order> orders;
 	public static final List<OrderDetail> orderDetails;
+	
+	public static class ProductOrderDetail {
+		private Product product;
+		private OrderDetail orderDetail;
+		public ProductOrderDetail(Product product, OrderDetail orderDetail) {
+			this.product = product;
+			this.orderDetail = orderDetail;
+		}
+		public Product getProduct() {
+			return product;
+		}
+		public OrderDetail getOrderDetail() {
+			return orderDetail;
+		}
+	}
 	
 	static {
 		
@@ -59,6 +74,10 @@ public class Ejercicio03 {
 		
 	}
 	
+	/*
+	 * Método que retorne la media de los precios de venta recomendados de cada línea de
+	 * producto.
+	 */
 	static Map<String, Double> metodo1() {
 		return products.stream().collect(groupingBy(
 				Product::getProductLine,
@@ -66,6 +85,9 @@ public class Ejercicio03 {
 				averagingDouble(Product::getMsrp)));
 	}
 	
+	/*
+	 * Método que retorne la media de los importes totales de todos los pedidos.
+	 */
 	static double metodo2() {
 		return orders.stream()
 			.mapToDouble(p -> orderDetails.stream()
@@ -74,9 +96,13 @@ public class Ejercicio03 {
 			.average().getAsDouble();
 	}
 	
+	
+	/*
+	 * Método que retorne el proveedor (vendor) que suministra la mayor cantidad de productos.
+	 */
 	static String metodo3() {
 		return products.stream()
-				.collect(groupingBy(Product::getVendor, Collectors.counting()))
+				.collect(groupingBy(Product::getVendor, counting()))
 				.entrySet()
 				.stream()
 				.max(Comparator.comparingLong(e -> e.getValue()))
@@ -84,12 +110,55 @@ public class Ejercicio03 {
 				.getKey();
 	}
 	
+	/*
+	 * Método que retorne el importe total que han generado las ventas de productos de cada
+	 * proveedor.
+	 */
+	public static Map<String, Double> metodo4() {
+		return orderDetails.stream()
+				.collect(
+						groupingBy(
+								od -> products.stream().filter(p -> p.getCode().equals(od.getProductCode())).findFirst().get().getVendor(),
+								summingDouble(od -> od.getPriceEach() * od.getQuantityOrdered())));
+	}
 	
+	/*
+	 * Método que retorne una LinkedList que contenga todas las líneas de detalle en las que la línea
+	 * de producto del producto pedido sea “Trains” o “Ships”, ordenadas por número de proveedor como primer
+	 * criterio de ordenación y por cantidad pedida (quantity ordered) como segundo criterio de ordenación
+	 */
+	
+	private static Set<String> set = Set.of("Trains", "Ships");
+	public static List<OrderDetail> metodo5() {
+		return orderDetails.stream()
+				.filter(od -> set.contains(products.stream()
+						.filter(p -> p.getCode().equals(od.getProductCode()))
+						.findFirst()
+						.get()
+						.getProductLine()))
+				.sorted(Comparator.comparing(OrderDetail::getOrderNumber).thenComparing(OrderDetail::getQuantityOrdered))
+				.collect(toCollection(LinkedList::new));
+	}
+	
+	/*
+	 * Método que retorne una lista que contenga el resultado de efectuar una operación equivalente a
+	 * la operación join del lenguaje SQL entre la lista products y la lista orderDetails.
+	 * Los elementos de la lista retornada serán instancias de una clase que tendrás que definir.
+	 */
+	public static List<ProductOrderDetail> metodo6() {
+		return products.stream()
+				.flatMap(p -> orderDetails.stream()
+									.filter(od -> od.getProductCode().equals(p.getCode()))
+									.map(od -> new ProductOrderDetail(p, od)))
+				.toList();
+	}
 	
 	public static void main(String[] args) {
 //		metodo1().entrySet().forEach(System.out::println);
-		System.out.println(metodo2());
-		System.out.println(metodo3());
+//		System.out.println(metodo2());
+//		System.out.println(metodo3());
+//		metodo4().forEach((k, v) -> System.out.println(k + ": " + v));
+		metodo5().forEach(System.out::println);
 	}
 	
 }
