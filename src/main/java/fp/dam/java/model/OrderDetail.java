@@ -1,10 +1,12 @@
 package fp.dam.java.model;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 import org.apache.commons.csv.CSVRecord;
 
-public class OrderDetail {
+public class OrderDetail implements Comparable<OrderDetail> {
+	
 	private int orderNumber;
 	private String productCode;
 	private int quantityOrdered;
@@ -62,6 +64,17 @@ public class OrderDetail {
 	public String toString() {
 		return "OrderDetail [orderNumber=" + orderNumber + ", productCode=" + productCode + ", quantityOrdered="
 				+ quantityOrdered + ", priceEach=" + priceEach + ", orderLineNumber=" + orderLineNumber + "]";
+	}
+
+	private static Comparator<OrderDetail> c = Comparator
+			.comparing(OrderDetail::getOrderNumber)
+			.thenComparing(OrderDetail::getOrderLineNumber)
+			.thenComparing(OrderDetail::getProductCode)
+			.thenComparing(OrderDetail::getQuantityOrdered)
+			.thenComparing(OrderDetail::getPriceEach);
+	@Override
+	public int compareTo(OrderDetail od) {
+		return c.compare(this, od);
 	}
 	
 }

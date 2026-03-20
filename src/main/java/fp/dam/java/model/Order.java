@@ -1,11 +1,12 @@
 package fp.dam.java.model;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.Objects;
 
 import org.apache.commons.csv.CSVRecord;
 
-public class Order {
+public class Order implements Comparable<Order>{
 
 	private int orderNumber;
 	private LocalDate orderDate;
@@ -39,6 +40,18 @@ public class Order {
 
 	public LocalDate getShippedDate() {
 		return shippedDate;
+	}
+	
+	public String getOrderDateString() {
+		return orderDate == null ? "" : orderDate.toString();
+	}
+
+	public String getRequiredDateString() {
+		return requiredDate == null ? "" : orderDate.toString();
+	}
+
+	public String getShippedDateString() {
+		return shippedDate == null ? "" : orderDate.toString();
 	}
 	
 	public String getStatus() {
@@ -78,6 +91,19 @@ public class Order {
 		return "Order [orderNumber=" + orderNumber + ", orderDate=" + orderDate + ", requiredDate=" + requiredDate
 				+ ", shippedDate=" + shippedDate + ", status=" + status + ", comments=" + comments + ", customerNumber="
 				+ customerNumber + "]";
+	}
+
+	private static Comparator<Order> c = Comparator
+			.comparing(Order::getOrderDateString)
+			.thenComparing(Order::getShippedDateString)
+			.thenComparing(Order::getRequiredDateString)
+			.thenComparing(Order::getStatus)
+			.thenComparing(Order::getComments)
+			.thenComparing(Order::getOrderNumber)
+			.thenComparing(Order::getCustomerNumber);
+	@Override
+	public int compareTo(Order o) {
+		return  c.compare(this, o);
 	}
 	
 }

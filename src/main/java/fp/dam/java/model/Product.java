@@ -100,15 +100,17 @@ public class Product implements Comparable<Product> {
 				+ ", msrp=" + msrp + "]";
 	}
 
-	static Comparator<Product> c = Comparator.comparing(Product::getProductLine)
-			.thenComparing(Product::getName)
-			.thenComparing(Product::getCode)
-			.thenComparing(Product::getScale)
+	private static Comparator<Product> c = Comparator
+			.comparing(Product::getProductLine)
 			.thenComparing(Product::getVendor)
+			.thenComparing(Product::getName)
+			.thenComparing(Product::getScale)
 			.thenComparing(Product::getDescription)
+			.thenComparing(Product::getStock)
 			.thenComparing(Product::getBuyPrice)
-			.thenComparing(Product::getMsrp);
-			
+			.thenComparing(Product::getMsrp)
+			.thenComparing(Product::getCode);
+	
 	@Override
 	public int compareTo(Product p) {
 		return c.compare(this, p);

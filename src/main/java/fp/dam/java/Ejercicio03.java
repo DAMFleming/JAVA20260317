@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.*;
 
 import org.apache.commons.csv.CSVFormat;
 
@@ -92,7 +92,7 @@ public class Ejercicio03 {
 		return orders.stream()
 			.mapToDouble(p -> orderDetails.stream()
 				.filter(od -> od.getOrderNumber() == p.getOrderNumber())
-				.collect(Collectors.summingDouble(od -> od.getQuantityOrdered() * od.getPriceEach())))
+				.collect(summingDouble(od -> od.getQuantityOrdered() * od.getPriceEach())))
 			.average().getAsDouble();
 	}
 	
@@ -158,7 +158,12 @@ public class Ejercicio03 {
 //		System.out.println(metodo2());
 //		System.out.println(metodo3());
 //		metodo4().forEach((k, v) -> System.out.println(k + ": " + v));
-		metodo5().forEach(System.out::println);
+//		metodo5().forEach(System.out::println);
+		metodo6().forEach(od -> System.out.println(
+				od.getProduct().getName() + " - " +
+				od.getProduct().getCode() + " - " +
+				od.getOrderDetail().getProductCode() + " - " +
+				(od.getOrderDetail().getQuantityOrdered() * od.getOrderDetail().getPriceEach() )));
 	}
 	
 }
