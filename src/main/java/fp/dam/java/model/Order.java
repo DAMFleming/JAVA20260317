@@ -42,18 +42,6 @@ public class Order implements Comparable<Order>{
 		return shippedDate;
 	}
 	
-	public String getOrderDateString() {
-		return orderDate == null ? "" : orderDate.toString();
-	}
-
-	public String getRequiredDateString() {
-		return requiredDate == null ? "" : orderDate.toString();
-	}
-
-	public String getShippedDateString() {
-		return shippedDate == null ? "" : orderDate.toString();
-	}
-	
 	public String getStatus() {
 		return status;
 	}
@@ -94,12 +82,12 @@ public class Order implements Comparable<Order>{
 	}
 
 	private static Comparator<Order> c = Comparator
-			.comparing(Order::getOrderDateString)
-			.thenComparing(Order::getShippedDateString)
-			.thenComparing(Order::getRequiredDateString)
+			.comparing(Order::getOrderNumber)
+			.thenComparing(o -> o.getOrderDate() == null ? "" : o.getOrderDate().toString())
+			.thenComparing(o -> o.getShippedDate() == null ? "" : o.getShippedDate().toString())
+			.thenComparing(o -> o.getRequiredDate() == null ? "" : o.getRequiredDate().toString())
 			.thenComparing(Order::getStatus)
 			.thenComparing(Order::getComments)
-			.thenComparing(Order::getOrderNumber)
 			.thenComparing(Order::getCustomerNumber);
 	@Override
 	public int compareTo(Order o) {
